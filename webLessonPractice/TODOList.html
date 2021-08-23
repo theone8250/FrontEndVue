@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.min.js"
+      integrity="sha256-chlNFSVx3TdcQ2Xlw7SvnbLAavAQLO0Y/LBiWX04viY="
+      crossorigin="anonymous"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha256-YLGeXaapI0/5IgZopewRJcFXomhRMlYYjugPLSyNjTY="
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha256-CjSoeELFOcH0/uxWu6mC/Vlrc1AARqbm/jiiImDGV3s="
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      function Binding() {}
+
+      $(document).ready(function () {
+        Binding();
+      });
+    </script>
+    <style></style>
+  </head>
+  <body>
+    <div id="stalker" class="container mt-3">
+      <input
+        type="text"
+        placeholder="enter your todo"
+        @keyup.enter="addTodo()"
+        v-model="inputValue"
+      />
+      <hr />
+      <div>
+        <p v-for="(item,index) in todos">
+          {{index+1}}.{{item}}
+          <button class="btn btn-danger" @click="removeTodo(index)">X</button>
+        </p>
+      </div>
+      <hr />
+      <div v-if="todos.length !=0">
+        Total : {{todos.length}} todo
+        <button class="btn btn-primary" @click="clearAll">Clear All</button>
+      </div>
+    </div>
+    <script>
+      const vm = new Vue({
+        el: "#stalker",
+        data: {
+          todos: ["學習", "睡覺", "做飯"], // 陣列資料裡的預設值，為了觀察先放入幾個元素為進入畫面的顯示，當然，也可以設空陣列，
+          inputValue: "", // 輸入框先初始空字串
+        },
+        methods: {
+          addTodo: function () {
+            // 增加 todo 的方法
+            this.todos.push(this.inputValue); // 使用陣列方法push()把輸入值放到陣列裡
+            console.log(this.todos);
+            this.inputValue = ""; // 1把輸入框清空
+          },
+          removeTodo: function (index) {
+            // 刪除 todo
+            this.todos.splice(index, 1); // 使用陣列方法splice(指定的index開始，刪除一筆)，依照抓到的 index 刪除
+          },
+          clearAll: function () {
+            // 清除所有
+            this.todos = []; // 把儲存陣列的 todos 用空陣列賦值清空
+          },
+        },
+      });
+    </script>
+  </body>
+</html>
