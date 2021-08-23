@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.min.js"
+      integrity="sha256-chlNFSVx3TdcQ2Xlw7SvnbLAavAQLO0Y/LBiWX04viY="
+      crossorigin="anonymous"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha256-YLGeXaapI0/5IgZopewRJcFXomhRMlYYjugPLSyNjTY="
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha256-CjSoeELFOcH0/uxWu6mC/Vlrc1AARqbm/jiiImDGV3s="
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <script>
+      function Binding() {}
+
+      $(document).ready(function () {
+        Binding();
+      });
+    </script>
+    <style></style>
+  </head>
+  <body>
+    <div id="stalker" class="container mt-3">
+      <h3>顯示格式化的日期和時間</h3>
+      <p>{{ time }}</p>
+      <p>完整格式：{{ time | timeString }}</p>
+      <p>年月日：{{ time | timeString('YYYY-MM-DD') }}</p>
+      <p>時分秒：{{ time | timeString('HH:mm:ss') }}</p>
+      <p>沒有指定：{{ time | timeString() }}</p>
+    </div>
+
+    <script>
+      // 定義過濾器
+      Vue.filter(
+        "timeString",
+        function (
+          // 參數1=原本的格式 2= 希望的格式，如果沒第二個參數就會使用原本的
+          value,
+          myFormat
+          // 也可以以es6的寫法給形參初始默認值
+          // myFormat = 'YYYY-MM-DD, HH:mm:ss'
+        ) {
+          // format(ˋ如果有給值就用myFormat || 不然就用我們設定的'YYYY-MM-DD, HH:mm:ss')
+          newValue = moment(value).format(myFormat || "YYYY-MM-DD, HH:mm:ss");
+          // 如何格式化，需找moment.js的用法
+          return newValue;
+        }
+      );
+      const vm = new Vue({
+        el: "#stalker",
+        data: {
+          // 建構式取得現在時間
+          time: new Date(),
+        },
+        methods: {},
+      });
+    </script>
+  </body>
+</html>
