@@ -31,6 +31,16 @@
       });
     </script>
     <style>
+      /*指定進場*/
+      .fade-enter-active,
+      .fade-leave-active {
+        transition: opacity 1s;
+      }
+      /*指定出場*/
+      .fade-enter,
+      .fade-leave-to {
+        opacity: 0;
+      }
       /* 使用Animation 動畫 */
       .bounce-enter-active {
         animation: bounce-in 1s;
@@ -53,53 +63,32 @@
   </head>
   <body>
     <div id="stalker" class="container mt-3">
-      <input
-        type="text"
-        placeholder="enter your todo"
-        @keyup.enter="addTodo()"
-        v-model="inputValue"
-      />
-      <hr />
-      <div>
-        <transition
-          name="bounce"
-          v-for="(item,index) in todos"
-          style="display: inline-block"
-        >
-          <div class="mb-2">
-            {{index+1}}.{{item}}
-            <button class="btn btn-danger" @click="removeTodo(index)">X</button>
-          </div>
-        </transition>
-      </div>
-      <hr />
-      <div v-if="todos.length !=0">
-        Total : {{todos.length}} todo
-        <button class="btn btn-primary" @click="clearAll">Clear All</button>
-      </div>
+      <!-- 將字慢慢消失、透明度0 -->
+      <button @click="show = !show">Switch1</button>
+      <transition name="fade">
+        <!-- <p v-show="show">Hello Paris</p> -->
+        <p v-if="show">Hello Paris</p>
+      </transition>
+    </div>
+
+    <!-- Animation 動畫 -->
+    <div id="Animation" class="container mt-3">
+      <button @click="show = !show">Toggle show</button><br />
+      <transition name="bounce">
+        <p v-if="show" style="display: inline-block">Hello stalker</p>
+      </transition>
     </div>
     <script>
       const vm = new Vue({
         el: "#stalker",
         data: {
-          todos: ["學習", "睡覺", "做飯"], // 陣列資料裡的預設值，為了觀察先放入幾個元素為進入畫面的顯示，當然，也可以設空陣列，
-          inputValue: "", // 輸入框先初始空字串
+          show: true,
         },
-        methods: {
-          addTodo: function () {
-            // 增加 todo 的方法
-            this.todos.push(this.inputValue); // 使用陣列方法push()把輸入值放到陣列裡
-            console.log(this.todos);
-            this.inputValue = ""; // 1把輸入框清空
-          },
-          removeTodo: function (index) {
-            // 刪除 todo
-            this.todos.splice(index, 1); // 使用陣列方法splice(指定的index開始，刪除一筆)，依照抓到的 index 刪除
-          },
-          clearAll: function () {
-            // 清除所有
-            this.todos = []; // 把儲存陣列的 todos 用空陣列賦值清空
-          },
+      });
+      const vm4 = new Vue({
+        el: "#Animation",
+        data: {
+          show: true,
         },
       });
     </script>
