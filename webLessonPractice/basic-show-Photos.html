@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.min.js"
+      integrity="sha256-chlNFSVx3TdcQ2Xlw7SvnbLAavAQLO0Y/LBiWX04viY="
+      crossorigin="anonymous"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha256-YLGeXaapI0/5IgZopewRJcFXomhRMlYYjugPLSyNjTY="
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha256-CjSoeELFOcH0/uxWu6mC/Vlrc1AARqbm/jiiImDGV3s="
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      function Binding() {}
+
+      $(document).ready(function () {
+        Binding();
+      });
+    </script>
+    <style>
+      img {
+        width: 450px;
+        height: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="show-photos">
+      <a href="#" @click="prev" v-show="index != 0">prev</a>
+      <span> | </span>
+      <a href="#" @click="next" v-show="index < imgArray.length-1">next</a>
+      <hr />
+      <img :src="imgArray[index]" title="" />
+    </div>
+
+    <script>
+      const app = new Vue({
+        el: "#show-photos",
+        data: {
+          imgArray: [
+            "http://aydasunuroglu.com/wp-content/uploads/se_terramadre01.jpg",
+            "http://aydasunuroglu.com/wp-content/uploads/se_terramadre02.jpg",
+            "http://aydasunuroglu.com/wp-content/uploads/se_terramadre03.jpg",
+            "http://aydasunuroglu.com/wp-content/uploads/se_terramadre06.jpg",
+            "http://aydasunuroglu.com/wp-content/uploads/se_terramadre04.jpg",
+          ],
+          index: 0,
+        },
+        methods: {
+          prev: function () {
+            this.index--;
+          },
+          next: function () {
+            this.index++;
+          },
+        },
+      });
+    </script>
+  </body>
+</html>

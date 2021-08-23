@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.min.js"
+    integrity="sha256-chlNFSVx3TdcQ2Xlw7SvnbLAavAQLO0Y/LBiWX04viY="
+    crossorigin="anonymous"
+  ></script>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha256-YLGeXaapI0/5IgZopewRJcFXomhRMlYYjugPLSyNjTY="
+    crossorigin="anonymous"
+  />
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha256-CjSoeELFOcH0/uxWu6mC/Vlrc1AARqbm/jiiImDGV3s="
+    crossorigin="anonymous"
+  ></script>
+  <script>
+    function Binding() {
+      const app = new Vue({
+        el: "#app",
+        data: {
+          message: "Bonjour",
+          city: "Paris",
+          content: '<a href="https://www.google.com.tw/"> Paris</a>',
+          name: 'Tracy',
+        },
+        methods: {
+          showAlert: function () {
+            return alert("Bonjour !");
+          },
+          showMsg: function () {
+            // let msg = this.message
+            // console.log(msg)
+            return alert(this.message);
+          },
+          addName: function () {
+            // 還會連帶改變原本的name...
+            this.name += "et moi";
+          },
+        },
+      });
+    }
+
+    $(document).ready(function () {
+      Binding();
+    });
+  </script>
+
+  <body>
+    <div id="app">
+      <h2 v-text="message">XXX</h2>
+      <h2>Tracy say: {{ message }}</h2>
+      <p v-html="content"></p>
+      <!-- 點擊 -->
+      <input type="button" value="showAlert" v-on:click="showAlert" />
+      <!-- 滑鼠移至元素上方 -->
+      <input type="button" value="showMsg" v-on:mouseover="showMsg" />
+      <!-- 點擊兩次 -->
+      <input type="button" value="addName" @dblclick="addName" />
+      <h3 @click="addName">Je suis {{name}}</h3>
+    </div>
+  </body>
+</html>

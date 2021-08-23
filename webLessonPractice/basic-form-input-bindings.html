@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.min.js"
+      integrity="sha256-chlNFSVx3TdcQ2Xlw7SvnbLAavAQLO0Y/LBiWX04viY="
+      crossorigin="anonymous"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha256-YLGeXaapI0/5IgZopewRJcFXomhRMlYYjugPLSyNjTY="
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha256-CjSoeELFOcH0/uxWu6mC/Vlrc1AARqbm/jiiImDGV3s="
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      function Binding() {}
+
+      $(document).ready(function () {
+        Binding();
+      });
+    </script>
+    <style></style>
+  </head>
+  <body>
+    <div id="app">
+      <form action="xxx" @submit.prevent="handleSubmit">
+        <p><span>Name : </span><input type="text" v-model="name" /></p>
+        <p>
+          <span>Password : </span
+          ><input type="password" name="pwd" v-model="pwd" />
+        </p>
+        <p>
+          <span>Sex : </span>
+          <input
+            type="radio"
+            name=""
+            id="female"
+            value="female"
+            v-model="sex"
+          />
+          <label for="female">Femme</label>
+          <input type="radio" name="" id="male" value="male" v-model="sex" />
+          <label for="male">Home</label>
+        </p>
+        <p>
+          <span>Hobby : </span>
+          <input type="checkbox" value="travel" id="travel" v-model="hobbys" />
+          <label for="travel">Travel</label>
+          <input type="checkbox" value="cinema" id="cinema" v-model="hobbys" />
+          <label for="cinema">Cinema</label>
+          <input type="checkbox" value="food" id="food" v-model="hobbys" />
+          <label for="food">Food</label>
+          <input type="checkbox" value="sport" id="sport" v-model="hobbys" />
+          <label for="sport">Sport</label>
+        </p>
+        <p>
+          <span>City : </span>
+          <!-- 動態顯示 -->
+          <select name="city" v-model="cityId">
+            <option value="">No selection</option>
+            <!-- 如果直接寫value="city.id" 會被當成是字串，需加上冒號 :value="" 成為表達式 -->
+            <option
+              :value="city.id"
+              v-for="(city, index) in citys"
+              :key="city.id"
+            >
+              {{city.name}}
+            </option>
+          </select>
+        </p>
+        <p>
+          <textarea
+            name="info"
+            cols="30"
+            rows="10"
+            placeholder="Self introduction"
+            v-model="info"
+          ></textarea>
+        </p>
+        <p>
+          <input type="submit" value="register" />
+        </p>
+      </form>
+    </div>
+    <script>
+      const vm = new Vue({
+        el: "#app",
+        data: {
+          name: "",
+          pwd: "",
+          sex: "female", // 預設值是從 value 抓來的
+          hobbys: ["travel"],
+          citys: [
+            {
+              id: 1,
+              name: "Paris",
+            },
+            {
+              id: 2,
+              name: "Taipei",
+            },
+            {
+              id: 3,
+              name: "London",
+            },
+            {
+              id: 4,
+              name: "Tainan",
+            },
+          ],
+          cityId: "2",
+          info: "",
+        },
+        methods: {
+          handleSubmit() {
+            console.log(
+              this.name,
+              this.pwd,
+              this.sex,
+              this.hobbys,
+              this.cityId,
+              this.info
+            );
+          },
+        },
+      });
+    </script>
+  </body>
+</html>

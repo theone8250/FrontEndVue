@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.min.js"
+    integrity="sha256-chlNFSVx3TdcQ2Xlw7SvnbLAavAQLO0Y/LBiWX04viY="
+    crossorigin="anonymous"
+  ></script>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha256-YLGeXaapI0/5IgZopewRJcFXomhRMlYYjugPLSyNjTY="
+    crossorigin="anonymous"
+  />
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha256-CjSoeELFOcH0/uxWu6mC/Vlrc1AARqbm/jiiImDGV3s="
+    crossorigin="anonymous"
+  ></script>
+  <script>
+    function Binding() {
+      const vm = new Vue({
+        el: "#app",
+        data: {
+          firstName: "A",
+          lastName: "B",
+          fullName2: "A-B",
+        },
+        // 計算屬性配置：值為物件
+        computed: {
+          // 什麼時候執行：初始化顯示/ 相關的data屬性資料發生變化
+          // 計算並回傳目前屬性的值
+          fullName1() {
+            // 計算屬性中的一個方法，方法的回傳值作為屬性值
+            return this.firstName + "-" + this.lastName;
+          },
+
+          fullName3: {
+            // 自定義物件，有兩個callback 函式 get, set(value)
+            // 什麼時候用？ 當需要讀取當前屬性時呼叫。
+            // 用來做什麼？ 根據相關的資料計算並傳回當前屬性的值
+            get() {
+              return this.firstName + "-" + this.lastName;
+            },
+            // 什麼時候用？ 監視當前屬性的變化，當屬性值發生變化時呼叫。更新相關的資料屬性
+            // 用來做什麼？ 根據相關的資料計算並傳回當前屬性的值
+            set(value) {
+              // value 是 fullName3 輸入的最新屬性值
+              console.log("fullName3 set()", value);
+              // 更新firstName和lastName
+              const names = value.split("-");
+              this.firstName = names[0];
+              this.lastName = names[1];
+            },
+          },
+        },
+        // 寫在vm 實例的監聽，叫配置監聽，另一種監聽方法使用vm的方法
+        watch: {
+          // 要監聽哪個屬性？ 監聽變動時通知我們，使用callback 給我們最新的值
+          // 也可以同時監聽未變化的與變化後的值，以參數帶入 callback
+          firstName: function (value) {
+            // firstName 發生了變化
+            console.log("watch firstName", value);
+            // 更新 fullName2
+            this.fullName2 = value + "-" + this.lastName;
+          },
+          // 這段和下面用 vm.$watch() 寫的效果是一樣的。
+          // lastName: function (value) {
+          //   this.fullName2 = this.firstName + '-' + value
+          // }
+        },
+      });
+      // 實例的方法都是以 $ 開頭 第一參數監聽對象 第二參數callback函式
+      vm.$watch("lastName", function (value) {
+        console.log("watch lastName", value);
+        // 更新 fullName2
+        this.fullName2 = this.firstName + " " + value;
+      });
+    }
+
+    $(document).ready(function () {
+      Binding();
+    });
+  </script>
+
+  <body>
+    <div id="app">
+      First Name :
+      <input type="text" placeholder="FirstName" v-model="firstName" /><br />
+      Last Name :
+      <input type="text" placeholder="LastName" v-model="lastName" /><br />
+
+      <!--fullName1是根據fistName和lastName計算產生出來的-->
+      Full Name1 (computed, sens unique ) :
+      <input type="text" placeholder="full Name1" v-model="fullName1" /><br />
+      <!--fullName2是根據watch監看產生出來的-->
+      Full Name2 (watch, deux sens) :
+      <input type="text" placeholder="full Name" v-model="fullName2" /><br />
+      Full Name3 (computed, deux sens) :
+      <input type="text" placeholder="full Name2" v-model="fullName3" /><br />
+
+      <!-- 顯示觀察用 -->
+      <p>firstName : {{ firstName }}</p>
+      <p>lastName : {{ lastName }}</p>
+      <p>使用 computed -> fullName1 : {{ fullName1 }}</p>
+      <p>使用 watch 監聽 ->fullName2 : {{ fullName2 }}</p>
+      <p>computed -> fullName3 : {{ fullName3 }}</p>
+    </div>
+  </body>
+</html>

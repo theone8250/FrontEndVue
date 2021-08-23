@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+  <head>
+    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.min.js"></script>
+
+    <script>
+      var json = {
+        ID: 3,
+        title: "總裁",
+        name: "Eric",
+        PictureURL: "https://i.imgur.com/uxvy97n.png",
+        Phone: "0912345678",
+        Address: "新竹市大同區二三五路四號六樓",
+        Memo: "澳洲來的人",
+        isValid: true,
+      };
+      function Binding() {
+        //設定繫結
+        new Vue({
+          el: "#block1",
+          data: json,
+        });
+      }
+      function getjson() {
+        alert(JSON.stringify(json));
+      }
+
+      $(function () {
+        Binding();
+        // setupClock();
+        $("#btn1").click(function (e) {
+          getjson();
+        });
+      });
+    </script>
+  </head>
+
+  <body>
+    <div class="container">
+      <div id="block1" class="row">
+        <div class="col-6">
+          <label>資料編號:{{ID}}</label>
+          <br />
+          <label>職稱:</label>
+          <input class="form-control" type="text" v-model="title" />
+          <label>姓名:</label>
+          <input class="form-control" type="text" v-model="name" />
+          <label>Phone:</label>
+          <input class="form-control" type="text" v-model="Phone" />
+        </div>
+        <div class="col-6">
+          <img v-bind:src="PictureURL" />
+        </div>
+        <br />
+        <div class="col">
+          <label>Address:</label>
+          <input class="form-control" type="text" v-model="Address" />
+          <label>Memo</label>
+          <input class="form-control" type="text" v-model="Memo" />
+          <br />
+          <button id="btn1" class="btn btn-outline-primary">
+            亂按會拿到JSON
+          </button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

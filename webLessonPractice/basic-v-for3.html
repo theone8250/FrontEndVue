@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.min.js"
+      integrity="sha256-chlNFSVx3TdcQ2Xlw7SvnbLAavAQLO0Y/LBiWX04viY="
+      crossorigin="anonymous"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha256-YLGeXaapI0/5IgZopewRJcFXomhRMlYYjugPLSyNjTY="
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha256-CjSoeELFOcH0/uxWu6mC/Vlrc1AARqbm/jiiImDGV3s="
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      function Binding() {}
+
+      $(document).ready(function () {
+        Binding();
+      });
+    </script>
+    <style></style>
+  </head>
+  <body>
+    <div id="app">
+      <h2>測試 v-for 遍歷、讀取陣列</h2>
+      <ul>
+        <li v-for="(p, index) in persons" :key="index">
+          {{ index }} --- {{p.name}} --- {{p.age}} --<button
+            @click="deleteP(index)"
+          >
+            Delete
+          </button>
+          --
+          <button @click="updateP(index, {name:'Fanny', age: 25})">
+            Update
+          </button>
+        </li>
+      </ul>
+      -- <button @click="addP({name:'Tom', age: 3})">Add</button>
+
+      <h2>測試 v-for 遍歷、讀取物件</h2>
+      <ul>
+        <li v-for="(value, key) in persons[1]" :key="key">
+          {{value}} -- {{key}}
+        </li>
+      </ul>
+    </div>
+
+    <script>
+      const vm = new Vue({
+        el: "#app",
+        data: {
+          persons: [
+            {
+              name: "Ayda",
+              age: 18,
+            },
+            {
+              name: "Tracy",
+              age: 24,
+            },
+            {
+              name: "Philippe",
+              age: 42,
+            },
+          ],
+        },
+        methods: {
+          deleteP(index) {
+            this.persons.splice(index, 1);
+          },
+          updateP(index, newP) {
+            // this.persons[index] = newP
+            // 這樣的做法因為無原生陣列函式，所以在vue 不會起作用，也不會自動更新頁面
+            // console.log(this.persons[index], newP)
+            this.persons.splice(index, 1, newP);
+          },
+          addP(newP) {
+            this.persons.push(newP);
+          },
+        },
+      });
+    </script>
+  </body>
+</html>

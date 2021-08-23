@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.min.js"
+    integrity="sha256-chlNFSVx3TdcQ2Xlw7SvnbLAavAQLO0Y/LBiWX04viY="
+    crossorigin="anonymous"
+  ></script>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha256-YLGeXaapI0/5IgZopewRJcFXomhRMlYYjugPLSyNjTY="
+    crossorigin="anonymous"
+  />
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha256-CjSoeELFOcH0/uxWu6mC/Vlrc1AARqbm/jiiImDGV3s="
+    crossorigin="anonymous"
+  ></script>
+  <script>
+    function Binding() {
+      const app = new Vue({
+        el: "#app",
+        data: {
+          count: 1,
+        },
+        methods: {
+          // 確認數字比 0 大才可以減
+          decrease: function () {
+            if (this.count > 0) {
+              this.count--;
+            } else {
+              console.log("out of stock");
+            }
+          },
+          // 加法，最多只能增加到10
+          increase: function () {
+            // 庫存只有10
+            if (this.count < 10) {
+              this.count++;
+            } else {
+              console.log("all sele, out of stock");
+            }
+          },
+        },
+      });
+    }
+
+    $(document).ready(function () {
+      Binding();
+    });
+  </script>
+
+  <body>
+    <div id="app">
+      <!-- 分別在兩個按鈕上監聽、綁定方法 -->
+      <input type="button" value="-" v-on:click="decrease" />
+      <span>{{count}}</span>
+      <input type="button" value="+" v-on:click="increase" />
+    </div>
+  </body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.min.js"
+    integrity="sha256-chlNFSVx3TdcQ2Xlw7SvnbLAavAQLO0Y/LBiWX04viY="
+    crossorigin="anonymous"
+  ></script>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha256-YLGeXaapI0/5IgZopewRJcFXomhRMlYYjugPLSyNjTY="
+    crossorigin="anonymous"
+  />
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha256-CjSoeELFOcH0/uxWu6mC/Vlrc1AARqbm/jiiImDGV3s="
+    crossorigin="anonymous"
+  ></script>
+  <script>
+    function Binding() {
+      const app = new Vue({
+        el: "#app",
+        data: {
+          isShow: false,
+          age: 16,
+        },
+        methods: {
+          changeShow: function () {
+            this.isShow = !this.isShow;
+          },
+          addAge: function () {
+            this.age++;
+          },
+        },
+      });
+    }
+
+    $(document).ready(function () {
+      Binding();
+    });
+  </script>
+
+  <body>
+    <div id="app">
+      <input type="button" value="switch show" @click="changeShow" /><img
+        v-show="isShow"
+        src="https://cn.vuejs.org/images/logo.png"
+      />
+      <hr />
+      <p>{{age}}</p>
+      <input type="button" value="Add age" @click="addAge" />
+      <img v-show="age>=18" src="https://cn.vuejs.org/images/logo.png" />
+    </div>
+  </body>
+</html>
