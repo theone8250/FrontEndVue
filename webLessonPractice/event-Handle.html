@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.min.js"
+      integrity="sha256-chlNFSVx3TdcQ2Xlw7SvnbLAavAQLO0Y/LBiWX04viY="
+      crossorigin="anonymous"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha256-YLGeXaapI0/5IgZopewRJcFXomhRMlYYjugPLSyNjTY="
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha256-CjSoeELFOcH0/uxWu6mC/Vlrc1AARqbm/jiiImDGV3s="
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      function Binding() {}
+
+      $(document).ready(function () {
+        Binding();
+      });
+    </script>
+    <style>
+      img {
+        width: 450px;
+        height: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="eventHandle">
+      <button @click="eventHandle1">eventHandle1</button>
+      <!-- 綁定自己的資料 -->
+      <button @click="eventHandle2('Hello')">eventHandle2</button>
+
+      <!-- 可利用vue的特殊變數$event 來拿到button的值 -->
+      <!-- 等同這樣寫： <button @click="eventHandle3">eventHandle3</button> -->
+      <button @click="eventHandle3($event)">eventHandle3</button>
+
+      <!-- 想傳自己給的變數，同時想取得點取 event 的值 -->
+      <button @click="eventHandle4(4448,$event )">eventHandle4</button>
+      <!-- 防止(stop)事件冒泡 -->
+      <div class="box1" @click="eventHandle5" style="background-color: crimson;">
+        <div class="box2" @click.stop="eventHandle6">stop事件事件</div>
+      </div>
+      <!-- 阻止事件默認行為 -->
+      <a href="http://google.com" @click.prevent="eventHandle7">想去google被擋住了</a>
+      <!-- 想使用enter鍵輸入 -->
+      <input type="text" @keyup.13="eventHandle8" />
+      <input type="text" @keyup.enter="eventHandle8" />
+    </div>
+    <script>
+      const vm = new Vue({
+        el: "#eventHandle",
+        data: {},
+        methods: {
+          eventHandle1() {
+            alert("eventHandle1");
+          },
+          eventHandle2(msg) {
+            alert(msg);
+          },
+          eventHandle3(event) {
+            // 透過 event裡的target與innerHTML去取得按鈕的內容
+            alert(event.target.innerHTML);
+          },
+          eventHandle4(nbr, event) {
+            alert(nbr + "---" + event.target.innerHTML);
+          },
+          eventHandle5() {
+            alert("out");
+          },
+          eventHandle6() {
+            alert("inner");
+          },
+          eventHandle7(event) {
+            alert("點到了");
+          },
+          eventHandle8($event) {
+            alert(event.target.value + "--" + event.keyCode);
+          },
+        },
+      });
+    </script>
+  </body>
+</html>
