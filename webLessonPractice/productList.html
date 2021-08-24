@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.min.js"
+      integrity="sha256-chlNFSVx3TdcQ2Xlw7SvnbLAavAQLO0Y/LBiWX04viY="
+      crossorigin="anonymous"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha256-YLGeXaapI0/5IgZopewRJcFXomhRMlYYjugPLSyNjTY="
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha256-CjSoeELFOcH0/uxWu6mC/Vlrc1AARqbm/jiiImDGV3s="
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      function Binding() {}
+
+      $(document).ready(function () {
+        Binding();
+      });
+    </script>
+    <style></style>
+  </head>
+  <body>
+    <div id="stalker" class="container mt-3">
+      <h1>商品列表增加、刪除功能</h1>
+      <h3>增加商品</h3>
+      <div>
+        ID:<input type="text" v-model="id" /> &nbsp; Name:<input
+          type="text"
+          v-model="name"
+          @keyup.enter="addItem"
+        />
+        <input type="button" value="Add" @click="addItem" /> &nbsp;
+        Search:<input
+          type="text"
+          v-model="keywords"
+          @keyup.enter="search"
+          id="search"
+          v-focus
+          v-color="'red'"
+        />
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <td>Id</td>
+            <td>Name&nbsp;&nbsp;&nbsp;&nbsp;</td>
+            <td>Time & Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+            <td>Operation</td>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- <tr v-for="item in lists" :key="item.id"> -->
+          <!-- 以搜尋結果渲染頁面 -->
+          <tr v-for="item in search(keywords)" :key="item.id">
+            <td>{{ item.id }}</td>
+            <td v-text="item.name"></td>
+            <td>{{ item.dateTime | showDateTime('')}}</td>
+            <td>
+              &nbsp;&nbsp;<a href="" @click.prevent="deleteItem(item.id)"
+                >Delete</a
+              >
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <script>
+      // 全域時間過濾器
+      Vue.filter("showDateTime", (dateNow, pattern = "") => {
+        // 根據給的時間字串，得到特定的時間
+        let dateTime = new Date(dateNow);
+        // yyyy/mm/dd
+        let year = dateTime.getFullYear();
+        let month = (dateTime.getMonth() + 1).toString().padStart(2, "0");
+        let day = dateTime.getDate().toString().padStart(2, "0");
+
+        // 讓時間格式皆為小寫
+        if (pattern.toLowerCase() === "dd.mm.yyyy") {
+          return `${day}.${month}.${year}`;
+        } else {
+          let hour = dateTime.getHours().toString().padStart(2, "0");
+          let minute = dateTime.getMinutes().toString().padStart(2, "0");
+          let second = dateTime.getSeconds().toString().padStart(2, "0");
+          return `${day}.${month}.${year} | ${hour}:${minute}:${second}`;
+        }
+      });
+      // 定義Vue全域指令 Vue.directive('指令名',物件)
+      // Ps.在以下的hook鉤子函式中，第一個參數永遠都是 el，表示被綁定了指令的那個元素，這個el參數是一個原生的JS物件
+      Vue.directive("focus", {
+        bind: function (el) {
+          // 綁定 bind 時：每當指令綁定到元素上時，會立刻執行這個bind韓式，且只執行一次。
+          // 在元素剛被綁定的時候，還沒有插入到DOM中去，這時呼叫focus方法不會執行，因為一個元素只有插入(inserted)DOM之後才會有聚焦效果。
+        },
+        inserted: function (el) {
+          // 插入值時：inserted 表示元素插入到DOM中時會執行inserted 函式。(觸發一次)
+          // 和JS有關的操作，最好在inserted的階段中去執行，防止JS行為不生效。
+          el.focus();
+        },
+        // 更新完成之後：每當VNode更新的時候，會執行 且會觸發多次
+        updated: function (el) {},
+      });
+
+      // 自定義改變字體顏色
+      Vue.directive("color", {
+        bind: function (el, binding) {
+          // 樣式，只要透過指令綁定給了元素，不管這個元素有沒有被插入到頁面中，此元素一定有一個行內的樣式。
+          // 將來元素一定會顯示到頁面中，這時瀏覽器的渲染引擎就會解析樣式，讓樣式套用在這個元素上。
+          // el.style.color = 'red';
+          // 和樣式相關的操作，一般都可在bind裡執行
+          console.log(binding.value);
+          console.log(binding.expression);
+          el.style.color = binding.value;
+        },
+      });
+
+      // 讓進入頁面時滑鼠直接進入搜尋input 框(focus)
+      // JS Native 寫法
+      // document.querySelector('#search').focus();
+
+      const vm = new Vue({
+        el: "#stalker",
+        data: {
+          id: "",
+          name: "",
+          keywords: "",
+          lists: [
+            {
+              id: 1,
+              name: "Vue",
+              dateTime: new Date(),
+            },
+            {
+              id: 2,
+              name: "React",
+              dateTime: new Date(),
+            },
+            {
+              id: 3,
+              name: "Angular  ",
+              dateTime: new Date(),
+            },
+            {
+              id: 4,
+              name: "JavaScript",
+              dateTime: new Date(),
+            },
+          ],
+        },
+        methods: {
+          addItem: function () {
+            var item = { id: this.id, name: this.name, dateTime: new Date() };
+            console.log(item);
+            this.lists.push(item);
+            this.id = "";
+            this.name = "";
+          },
+          deleteItem: function (id) {
+            this.lists.some((item, i) => {
+              if (item.id == id) {
+                this.lists.splice(i, 1);
+                return true;
+              }
+            });
+            // 另一種抓index的方式
+            // let index = this.lists.findIndex((item) => {
+            //   if (item.id == id) return true;
+            // });
+            // console.log(index);
+            // this.splice(index. 1)
+          },
+          // 搜尋
+          search: function (keywords) {
+            // let searchLists = [];
+            // this.lists.forEach((item) => {
+            //   if (item.name.indexOf(keywords) != -1) {
+            //     searchLists.push(item);
+            //   }
+            //   return searchLists;
+            // });
+            // 另譯種寫法
+            return this.lists.filter((item) => {
+              // if(item.name.indexOF(keywords != -1))
+              if (item.name.includes(keywords)) {
+                return item;
+              }
+            });
+          },
+        },
+      });
+    </script>
+  </body>
+</html>
