@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.min.js"
+      integrity="sha256-chlNFSVx3TdcQ2Xlw7SvnbLAavAQLO0Y/LBiWX04viY="
+      crossorigin="anonymous"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha256-YLGeXaapI0/5IgZopewRJcFXomhRMlYYjugPLSyNjTY="
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha256-CjSoeELFOcH0/uxWu6mC/Vlrc1AARqbm/jiiImDGV3s="
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      function Binding() {}
+
+      $(document).ready(function () {
+        Binding();
+      });
+    </script>
+    <style></style>
+  </head>
+  <body>
+    <div id="faker">
+      <!-- 沒有傳值的狀態 -->
+      <menu-item></menu-item>
+      <!-- 靜態傳值 -->
+      <menu-item title-p="靜態傳來自父元件的值"></menu-item>
+      <!-- 動態傳值 -->
+      <menu-item :title-p="titleP" content="hello"></menu-item>
+    </div>
+    <script>
+      // 全域的子元件
+      Vue.component("menu-item", {
+        // 在子元件中接收父元件的資料 props
+        props: ["titleP", "content"],
+        data: function () {
+          return {
+            msg: "子元件的資料",
+          };
+        },
+        // 直接寫入父元件的資料
+        template: `<div> {{ msg + '-----' + titleP + '-----' + content }} </div>`,
+      });
+
+      // 實例本身就是父元件
+      const faker = new Vue({
+        el: "#faker",
+        data: {
+          titleP: "動態綁定父元件資料",
+        },
+      });
+    </script>
+  </body>
+</html>
