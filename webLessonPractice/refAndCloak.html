@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.min.js"
+      integrity="sha256-chlNFSVx3TdcQ2Xlw7SvnbLAavAQLO0Y/LBiWX04viY="
+      crossorigin="anonymous"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha256-YLGeXaapI0/5IgZopewRJcFXomhRMlYYjugPLSyNjTY="
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha256-CjSoeELFOcH0/uxWu6mC/Vlrc1AARqbm/jiiImDGV3s="
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      function Binding() {}
+
+      $(document).ready(function () {
+        Binding();
+      });
+    </script>
+    <style>
+      /* 使用Animation 動畫 */
+      .bounce-enter-active {
+        animation: bounce-in 1s;
+      }
+      .bounce-leave-active {
+        animation: bounce-in 1s reverse;
+      }
+      @keyframes bounce-in {
+        0% {
+          transform: scale(0);
+        }
+        50% {
+          transform: scale(1.5);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+      [v-cloak] {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div v-cloak id="stalker" class="container mt-3">
+      <p ref="content">Hello stalker</p>
+      <button @click="hint">Hint</button>
+      <!-- v-cloak -->
+      <p v-cloak>{{msg}}</p>
+      <div v-once>{{content}}</div>
+    </div>
+    <script>
+      const vm = new Vue({
+        el: "#stalker",
+        data: {
+          msg: "Hello stalker",
+          content: "第一次的文字內容",
+        },
+        methods: {
+          hint() {
+            alert(this.$refs.content.textContent);
+            alert(this.$refs.content.innerText);
+          },
+        },
+      });
+      // 第二次給值渲染
+      vm.content = "第二次的文字更新";
+    </script>
+  </body>
+</html>
