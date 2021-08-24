@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.min.js"
+      integrity="sha256-chlNFSVx3TdcQ2Xlw7SvnbLAavAQLO0Y/LBiWX04viY="
+      crossorigin="anonymous"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha256-YLGeXaapI0/5IgZopewRJcFXomhRMlYYjugPLSyNjTY="
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha256-CjSoeELFOcH0/uxWu6mC/Vlrc1AARqbm/jiiImDGV3s="
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      function Binding() {}
+
+      $(document).ready(function () {
+        Binding();
+      });
+    </script>
+    <style></style>
+  </head>
+  <body>
+    <div id="faker" class="container mt-3">
+      <div>{{ msg }}</div>
+      <text-bloc
+        :props-str="propsStr"
+        :props-num="postCode"
+        :props-boo="isVegan"
+        :props-arr="foods"
+        :props-obj="boos"
+      ></text-bloc>
+    </div>
+    <script>
+      // 子元件
+      Vue.config.errorHandler = function (err, vm, info) {};
+      Vue.component("text-bloc", {
+        props: ["propsStr", "propsNum", "propsBoo", "propsArr", "propsObj"],
+        template: `
+            <div>
+              <div>{{ 'City: ' + propsStr }}</div>
+              <div>{{ 'post Code: ' + propsNum }}</div>
+              <div>{{ 12 + propsNum }}</div>
+              <div>{{ 'isVegan: ' + propsBoo }}</div>
+              <ul>
+                <li v-for="(item,index) in propsArr" :key='index'>{{item}}</li>
+              </ul>
+            <div>{{ propsObj.name}} : {{propsObj.age }}</div>
+          </div>
+            `,
+      });
+      // 父元件
+      const vm = new Vue({
+        el: "#faker",
+        data: {
+          msg: "父元件中的資料內容",
+          propsStr: "Paris",
+          postCode: 75,
+          isVegan: true,
+          foods: ["cafe", "wine", "apple"],
+          boos: {
+            name: "Tracy",
+            age: 42,
+          },
+        },
+      });
+    </script>
+  </body>
+</html>
