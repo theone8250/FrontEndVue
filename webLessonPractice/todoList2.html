@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.min.js"
+      integrity="sha256-chlNFSVx3TdcQ2Xlw7SvnbLAavAQLO0Y/LBiWX04viY="
+      crossorigin="anonymous"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha256-YLGeXaapI0/5IgZopewRJcFXomhRMlYYjugPLSyNjTY="
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha256-CjSoeELFOcH0/uxWu6mC/Vlrc1AARqbm/jiiImDGV3s="
+      crossorigin="anonymous"
+    ></script>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"
+    />
+    <script>
+      function Binding() {}
+
+      $(document).ready(function () {
+        Binding();
+      });
+    </script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        height: 100vh;
+        display: flex;
+        flex-flow: column;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .fa-trash-alt {
+        color: red;
+      }
+
+      h1 {
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+
+      .fa-check {
+        color: green;
+        margin-right: 5px;
+      }
+
+      .todo-wrapper {
+        display: flex;
+        justify-content: space-between;
+        border-radius: 16px;
+        box-shadow: 5px 0 5px rgba(0, 0, 0, 0.3);
+        width: 270px;
+        padding: 1.5rem 0.8rem;
+        margin-top: 0.3rem;
+      }
+
+      .todo-title {
+        font-size: 18px;
+        font-weight: bold;
+      }
+
+      .todo-icons {
+        display: flex;
+        cursor: pointer;
+      }
+
+      .success {
+        border-left: 4px solid green;
+      }
+
+      .error {
+        border-left: 4px solid red;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="stalker">
+      <h1>My Todo List</h1>
+      <todo-list
+        v-for="todo in todos"
+        :key="todo.id"
+        :todo="todo"
+        @delete-todo="handleDeleteTodo"
+        @complete-todo="handleCompleteTodo"
+      ></todo-list>
+    </div>
+    <script>
+      const todos = [
+        {
+          title: "Get dressed",
+          isComplete: false,
+        },
+        {
+          title: "Buy food",
+          isComplete: false,
+        },
+        {
+          title: "Eat lunch",
+          isComplete: true,
+        },
+        {
+          title: "Write Article",
+          isComplete: true,
+        },
+      ];
+
+      Vue.component("todo-list", {
+        template: `
+        <div :class="[todo.isComplete? 'success':'error','todo-wrapper']">
+      <div class="todo-title">
+        {{todo.title}}
+      </div>
+      <div class="todo-icons">
+        <i class="fa fa-check" aria-hidden="true" @click="completeTodo"></i>
+        <i class="fa fa-trash-alt" aria-hidden="true" @click="deleteTodo"></i>
+      </div>
+    </div>`,
+        props: {
+          todo: {
+            type: Object,
+            required: true,
+          },
+        },
+        methods: {
+          // 加入methods屬性
+          deleteTodo() {
+            this.$emit("delete-todo", {
+              title: this.todo.title,
+            });
+          },
+          completeTodo() {
+            this.$emit("complete-todo", {
+              title: this.todo.title,
+            });
+          },
+        },
+      });
+      const vm = new Vue({
+        el: "#stalker",
+        data: {
+          todos: todos,
+        },
+        methods: {
+          handleDeleteTodo({ title }) {
+            console.log(title);
+            this.todos = this.todos.filter((item) => item.title !== title);
+          },
+          handleCompleteTodo({ title }) {
+            const targetTodo = this.todos.find((item) => item.title === title);
+            targetTodo.isComplete = !targetTodo.isComplete;
+          },
+        },
+      });
+    </script>
+  </body>
+</html>
