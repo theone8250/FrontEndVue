@@ -19,5 +19,8 @@ export default new Vuex.Store({
       commit("ADD_NUMBER", number)
     }
   },
-  modules: {}
+  modules: {},
+  getters: {
+    sortedNumbers: (state) => state.numbers.sort((a, b) => a - b)
+  },
 })
