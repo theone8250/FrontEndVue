@@ -1,15 +1,18 @@
 <template>
   <div>
-    <h2>{{ numbers }}</h2>
+    <h2>{{ storeState }}</h2>
   </div>
 </template>
 
+
 <script>
-import { EventBus } from "../EventBus.js"; // 引入EventBus實體
+import { EventBus } from "../EventBus.js";
+import { store } from "../store.js";
+
 export default {
   data() {
     return {
-      numbers: [1, 2, 3, 5, 7],
+      storeState: store.state.numbers,
     };
   },
   methods: {
@@ -20,7 +23,8 @@ export default {
     },
   },
   created() {
-    this.handleAddNumber(); // 在建立時就開始監聽
+    this.handleAddNumber();
+    console.log(store);
   },
 };
 </script>
